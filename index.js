@@ -34,7 +34,7 @@ function formatDuration(ms) {
 let lastUpTime = null;
 let lastStatus = null;
 const STATUS_CHANNEL_ID = "1437904935059722381";
-const MAIN_SITE_URL = "https://www.logged.tg/auth/nexus";
+const MAIN_SITE_URL = "https://www.logged.tg/auth/appsite"; // URL corect
 const MAIN_SITE_NAME = "NEXUS";
 
 // 5.1️⃣ Monitor site la fiecare 30 secunde (anunță automat doar când se schimbă status)
@@ -60,8 +60,8 @@ setInterval(async () => {
       const channel = client.channels.cache.get(STATUS_CHANNEL_ID);
       if (channel) {
         const embed = new EmbedBuilder()
-          .setColor(0x000000)
-          .setThumbnail("")
+          .setColor(0x000000) // border negru
+          .setThumbnail("") // gol
           .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${currentStatus}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
           .setImage("https://i.imgur.com/qxSArud.gif")
           .setFooter({ text: "Site Uptime Monitor" });
