@@ -34,7 +34,7 @@ function formatDuration(ms) {
 let lastUpTime = null;
 let lastStatus = null;
 const STATUS_CHANNEL_ID = "1437904935059722381";
-const MAIN_SITE_URL = "https://www.logged.tg/auth/appsite"; // URL corect
+const MAIN_SITE_URL = "https://www.logged.tg/auth/appsites"; // URL corect
 const MAIN_SITE_NAME = "NEXUS";
 
 // 5.1️⃣ Monitor site la fiecare 30 secunde (anunță automat doar când se schimbă status)
