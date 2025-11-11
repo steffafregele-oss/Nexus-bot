@@ -59,8 +59,8 @@ setInterval(async () => {
       const channel = client.channels.cache.get(STATUS_CHANNEL_ID);
       if (channel) {
         const embed = new EmbedBuilder()
-          .setColor(0x800080)
-          .setThumbnail("https://i.imgur.com/qxSArud.gif")
+          .setColor(0x000000)
+          .setThumbnail("") // gol
           .setDescription(
             `-- **NEXUS BOT** --\n\n` +
             `**${MAIN_SITE_NAME}**\n` +
@@ -156,8 +156,8 @@ client.on('messageCreate', async (message) => {
       let uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
 
       const embed = new EmbedBuilder()
-        .setColor(0x800080)
-        .setThumbnail("https://i.imgur.com/qxSArud.gif")
+        .setColor(0x000000)
+        .setThumbnail("") // gol
         .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${statusText}\nUPTIME: ${uptimeText}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
