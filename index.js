@@ -60,15 +60,15 @@ setInterval(async () => {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const statusText = res.ok
-          ? "https://cdn.discordapp.com/emojis/1438177965962690732.gif MAIN SITE IS UP!"
-          : "https://cdn.discordapp.com/emojis/1438177965962690732.gif ⚠️ MAIN SITE IS DOWN!";
+          ? " MAIN SITE IS UP!"
+          : " ⚠️ MAIN SITE IS DOWN!";
 
         const embed = new EmbedBuilder()
           .setColor(0x000000)
-          .setThumbnail("https://cdn.discordapp.com/emojis/1438178217247768699.gif") // thumbnail animat
+          .setThumbnail("https://cdn.discordapp.com/emojis/1438177965962690732.gif") // thumbnail animat
           .setDescription(
             `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
-            `<a:5228_Seta:1438177992168968343> STATUS: ${currentStatus}\n` +
+            `<a:590203blackverified:1438178217247768699> STATUS: ${currentStatus}\n` +
             `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
             `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
           )
@@ -192,8 +192,8 @@ client.on("messageCreate", async (message) => {
       }
 
       const statusText = res.ok
-        ? "https://cdn.discordapp.com/emojis/1438178217247768699.gif ONLINE ✅"
-        : "https://cdn.discordapp.com/emojis/1438178217247768699.gif OFFLINE ❌";
+        ? " ONLINE ✅"
+        : "OFFLINE ❌";
 
       const uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
 
@@ -203,7 +203,7 @@ client.on("messageCreate", async (message) => {
         .setDescription(
           `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
           `<a:5228_Seta:1438177992168968343> **${MAIN_SITE_NAME}**\n` +
-          `<a:5228_Seta:1438177992168968343> STATUS: ${statusText}\n` +
+          `<a:590203blackverified:1438178217247768699> STATUS: ${statusText}\n` +
           `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
           `<a:5228_Seta:1438177992168968343> UPTIME: ${uptimeText}\n` +
           `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
