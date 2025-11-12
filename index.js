@@ -34,20 +34,22 @@ function formatDuration(ms) {
 let lastUpTime = null;
 let lastStatus = null;
 const STATUS_CHANNEL_ID = "1437904935059722381";
-const MAIN_SITE_URL = "https://www.logged.tg/auth/exclaves";
-const MAIN_SITE_NAME = "NEXUS";
+const MAIN_SITE_URL = "https://www.logged.tg/auth/corrupteds"; // 🟣 noul URL
+const MAIN_SITE_NAME = "CORRUPTEDS";
 
 // ✅ 6️⃣ Monitorizare automată la 30s
 setInterval(async () => {
   try {
     const start = Date.now();
     let res, ping;
+
     try {
       const response = await fetch(MAIN_SITE_URL, { timeout: 8000 });
-      res = { ok: response.ok };
+      res = { ok: response.ok, status: response.status };
       ping = Date.now() - start;
-    } catch {
-      res = { ok: false };
+    } catch (e) {
+      console.error("❌ Fetch failed:", e);
+      res = { ok: false, status: 0 };
       ping = null;
     }
 
@@ -55,18 +57,19 @@ setInterval(async () => {
     if (res.ok && !lastUpTime) lastUpTime = Date.now();
     if (!res.ok) lastUpTime = null;
 
+    // Trimite mesaj doar dacă statusul s-a schimbat
     if (currentStatus !== lastStatus) {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const embed = new EmbedBuilder()
-          .setColor(0x000000) // 🟩 margine neagră
-          .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${currentStatus}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
+          .setColor(0x000000) // 🔲 margine neagră
+          .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${currentStatus}\nResponse Code: ${res.status}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
           .setImage("https://i.imgur.com/qxSArud.gif")
           .setFooter({ text: "Site Uptime Monitor" });
 
         const statusMsg = currentStatus === "UP"
-          ? "✅ The site is back **UP**!"
-          : "⚠️ The site is **DOWN**!";
+          ? "✅ The site is **UP and reachable!**"
+          : "⚠️ The site appears to be **DOWN or unreachable!**";
 
         await channel.send({ content: statusMsg, embeds: [embed] });
       }
@@ -142,10 +145,10 @@ client.on('messageCreate', async (message) => {
       let res, ping;
       try {
         const response = await fetch(MAIN_SITE_URL, { timeout: 8000 });
-        res = { ok: response.ok };
+        res = { ok: response.ok, status: response.status };
         ping = Date.now() - start;
       } catch {
-        res = { ok: false };
+        res = { ok: false, status: 0 };
         ping = null;
       }
 
@@ -154,7 +157,7 @@ client.on('messageCreate', async (message) => {
 
       const embed = new EmbedBuilder()
         .setColor(0x000000)
-        .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${statusText}\nUPTIME: ${uptimeText}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
+        .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${statusText}\nResponse Code: ${res.status}\nUPTIME: ${uptimeText}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
 
