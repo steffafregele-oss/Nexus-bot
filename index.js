@@ -60,14 +60,14 @@ setInterval(async () => {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const statusText = res.ok
-          ? "<a:590203blackverified:1438177992168968343> MAIN SITE IS UP!"
-          : "<a:590203blackverified:1438177992168968343> ⚠️ MAIN SITE IS DOWN!";
+          ? "https://cdn.discordapp.com/emojis/1438177965962690732.gif MAIN SITE IS UP!"
+          : "https://cdn.discordapp.com/emojis/1438177965962690732.gif ⚠️ MAIN SITE IS DOWN!";
 
         const embed = new EmbedBuilder()
           .setColor(0x000000)
           .setDescription(
             `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
-            `<a:5228_Seta:1438177992168968343> **${MAIN_SITE_NAME}**\n` +
+            ` **${MAIN_SITE_NAME}**\n` +
             `<a:5228_Seta:1438177992168968343> STATUS: ${currentStatus}\n` +
             `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
             `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
