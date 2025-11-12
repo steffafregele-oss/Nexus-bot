@@ -60,17 +60,23 @@ setInterval(async () => {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const statusText = res.ok
-          ? `<a:nexus:1438069841616703528> **MAIN SITE IS UP!**`
-          : `⚠️ **MAIN SITE IS DOWN!**`;
+          ? "<:590203blackverified:1438177992168968343> **MAIN SITE IS UP!**"
+          : "<:590203blackverified:1438177992168968343> ⚠️ MAIN SITE IS DOWN!";
 
         const embed = new EmbedBuilder()
           .setColor(0x000000)
-          .setThumbnail(res.ok ? "https://cdn.discordapp.com/emojis/1438162788374679613.gif" : "")
-          .setDescription(`-- <a:nexus:1438067866447515788> **NEXUS BOT** <a:nexus:1438067866447515788> --\n\n<:arrow:1438161451817631905> **${MAIN_SITE_NAME}**\n<:arrow:1438161451817631905> STATUS: ${currentStatus}\n<:arrow:1438161451817631905> RESPONSE CODE: ${res.status}\n<:arrow:1438161451817631905> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`)
+          .setThumbnail(res.ok ? "https://cdn.discordapp.com/emojis/1438177992168968343.gif" : "")
+          .setDescription(
+            `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
+            `<:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
+            `<:58179black:1438177965962690732> STATUS: ${currentStatus}\n` +
+            `<:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
+            `<:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+          )
           .setImage("https://i.imgur.com/qxSArud.gif")
           .setFooter({ text: "NEXUS Site Monitor" });
 
-        await channel.send({ embeds: [embed] });
+        await channel.send({ content: statusText, embeds: [embed] });
       }
       lastStatus = currentStatus;
     }
@@ -102,14 +108,14 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(
-          `-- <a:nexus:1438067866447515788> **NEXUS BOT** <a:nexus:1438067866447515788> --\n\n` +
-          `<:arrow:1438161451817631905> **User:** ${userName}\n\n` +
-          `<:arrow:1438161451817631905> **TOTAL STATS:**\n` +
+          `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
+          `<:58179black:1438177965962690732> **User:** ${userName}\n\n` +
+          `<:58179black:1438177965962690732> **TOTAL STATS:**\n` +
           `Hits: ${formatNumber(normal.Totals?.Accounts)}\n` +
           `Summary: ${formatNumber(normal.Totals?.Summary)}\n` +
           `RAP: ${formatNumber(normal.Totals?.Rap)}\n\n` +
           `──────\n\n` +
-          `<:arrow:1438161451817631905> **BIGGEST HIT:**\n` +
+          `<:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(normal.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(normal.Highest?.Summary)}\n` +
           `RAP: ${formatNumber(normal.Highest?.Rap)}`
@@ -137,14 +143,14 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(
-          `-- <a:nexus:1438067866447515788> **NEXUS BOT** <a:nexus:1438067866447515788> --\n\n` +
-          `<:arrow:1438161451817631905> **User:** ${userName}\n\n` +
-          `<:arrow:1438161451817631905> **DAILY STATS:**\n` +
+          `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
+          `<:58179black:1438177965962690732> **User:** ${userName}\n\n` +
+          `<:58179black:1438177965962690732> **DAILY STATS:**\n` +
           `Hits: ${formatNumber(daily.Totals?.Accounts)}\n` +
           `Summary: ${formatNumber(daily.Totals?.Summary)}\n` +
           `RAP: ${formatNumber(daily.Totals?.Rap)}\n\n` +
           `──────\n\n` +
-          `<:arrow:1438161451817631905> **BIGGEST HIT:**\n` +
+          `<:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(daily.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(daily.Highest?.Summary)}\n` +
           `RAP: ${formatNumber(daily.Highest?.Rap)}`
@@ -174,21 +180,19 @@ client.on("messageCreate", async (message) => {
         ping = null;
       }
 
-      const statusText = res.ok ? "ONLINE ✅" : "OFFLINE ❌";
-      const uptimeText = res.ok && lastUpTime
-        ? `UP for ${formatDuration(Date.now() - lastUpTime)}`
-        : "❌ No uptime data";
+      const statusText = res.ok ? "<:590203blackverified:1438177992168968343> ONLINE ✅" : "<:590203blackverified:1438177992168968343> OFFLINE ❌";
+      const uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
 
       const embed = new EmbedBuilder()
         .setColor(0x000000)
-        .setThumbnail("https://cdn.discordapp.com/emojis/1438162788374679613.gif")
+        .setThumbnail("https://cdn.discordapp.com/emojis/1438177992168968343.gif") // Seta
         .setDescription(
-          `-- <a:nexus:1438069841616703528> **MAIN SITE IS UP** <a:nexus:1438069841616703528> --\n\n` +
-          `<:arrow:1438161451817631905> **${MAIN_SITE_NAME}**\n` +
-          `<:arrow:1438161451817631905> STATUS: ${statusText}\n` +
-          `<:arrow:1438161451817631905> RESPONSE CODE: ${res.status}\n` +
-          `<:arrow:1438161451817631905> UPTIME: ${uptimeText}\n` +
-          `<:arrow:1438161451817631905> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+          `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
+          `<:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
+          `<:58179black:1438177965962690732> STATUS: ${statusText}\n` +
+          `<:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
+          `<:58179black:1438177965962690732> UPTIME: ${uptimeText}\n` +
+          `<:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
         )
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
