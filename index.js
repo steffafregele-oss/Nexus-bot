@@ -1,26 +1,26 @@
-// 1️⃣ Importuri
+// ✅ 1️⃣ Importuri
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const fetch = require('node-fetch');
 const express = require('express');
 
-// 2️⃣ Server Express pentru keep-alive
+// ✅ 2️⃣ Server Express pentru keep-alive
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => res.send("Bot is alive ✅"));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-// 3️⃣ Creezi clientul Discord
-const client = new Client({ 
+// ✅ 3️⃣ Creezi clientul Discord
+const client = new Client({
   intents: [
-    GatewayIntentBits.Guilds, 
-    GatewayIntentBits.GuildMessages, 
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent
-  ] 
+  ]
 });
 
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
 
-// 4️⃣ Funcții utile
+// ✅ 4️⃣ Funcții utile
 function formatNumber(num) { return num?.toLocaleString() || "0"; }
 function formatDuration(ms) {
   let sec = Math.floor(ms / 1000);
@@ -30,67 +30,62 @@ function formatDuration(ms) {
   return `${hr}h ${min}m ${sec}s`;
 }
 
-// 5️⃣ Config Uptime Monitor
+// ✅ 5️⃣ Config Monitorizare Site
 let lastUpTime = null;
 let lastStatus = null;
 const STATUS_CHANNEL_ID = "1437904935059722381";
-const MAIN_SITE_URL = "https://www.logged.tg/auth/appsites"; // URL corect
+const MAIN_SITE_URL = "https://www.logged.tg/auth/exclaves";
 const MAIN_SITE_NAME = "NEXUS";
 
-// 5.1️⃣ Monitor site la fiecare 30 secunde (anunță automat doar când se schimbă status)
+// ✅ 6️⃣ Monitorizare automată la 30s
 setInterval(async () => {
   try {
     const start = Date.now();
     let res, ping;
-    try { 
-      const response = await fetch(MAIN_SITE_URL); 
-      res = { ok: response.ok }; 
-      ping = Date.now() - start; 
-    } catch { 
-      res = { ok: false }; 
-      ping = null; 
+    try {
+      const response = await fetch(MAIN_SITE_URL, { timeout: 8000 });
+      res = { ok: response.ok };
+      ping = Date.now() - start;
+    } catch {
+      res = { ok: false };
+      ping = null;
     }
 
-    let currentStatus = res.ok ? "UP" : "DOWN";
+    const currentStatus = res.ok ? "UP" : "DOWN";
     if (res.ok && !lastUpTime) lastUpTime = Date.now();
     if (!res.ok) lastUpTime = null;
 
-    // Trimite mesaj doar dacă status-ul s-a schimbat
     if (currentStatus !== lastStatus) {
-      const channel = client.channels.cache.get(STATUS_CHANNEL_ID);
+      const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const embed = new EmbedBuilder()
-          .setColor(0x000000) // border negru
-          .setThumbnail("") // gol
+          .setColor(0x000000) // 🟩 margine neagră
           .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${currentStatus}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
           .setImage("https://i.imgur.com/qxSArud.gif")
           .setFooter({ text: "Site Uptime Monitor" });
 
-        const statusMsg = currentStatus === "UP" 
-          ? "✅ The site is back **UP**!" 
+        const statusMsg = currentStatus === "UP"
+          ? "✅ The site is back **UP**!"
           : "⚠️ The site is **DOWN**!";
-        
+
         await channel.send({ content: statusMsg, embeds: [embed] });
       }
       lastStatus = currentStatus;
     }
-
-  } catch (err) { console.error("Error checking site:", err); }
+  } catch (err) {
+    console.error("Error checking site:", err);
+  }
 }, 30000);
 
-// 6️⃣ Event listener pentru mesaje
+// ✅ 7️⃣ Comenzi
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
 
-  let args = message.content.split(" ").slice(1);
-  let targetUser;
-  if (args[0]) {
-    try { targetUser = await client.users.fetch(args[0]); } 
-    catch { targetUser = message.mentions.users.first() || message.author; }
-  } else { targetUser = message.mentions.users.first() || message.author; }
+  const args = message.content.split(" ").slice(1);
+  const targetUser = message.mentions.users.first() || message.author;
   const targetId = targetUser.id;
 
-  // ===== !stats =====
+  // ⚙️ !stats
   if (message.content.startsWith('!stats')) {
     try {
       const res = await fetch(`https://api.injuries.lu/v1/public/user?userId=${targetId}`);
@@ -111,11 +106,11 @@ client.on('messageCreate', async (message) => {
       await message.channel.send({ embeds: [embed] });
     } catch (err) {
       console.error('Error fetching stats:', err);
-      message.reply("❌ Error fetching stats. Please try again later.");
+      message.reply("❌ Error fetching stats.");
     }
   }
 
-  // ===== !daily =====
+  // ⚙️ !daily
   if (message.content.startsWith('!daily')) {
     try {
       const res = await fetch(`https://api.injuries.lu/v2/daily?type=0x2&cs=3&ref=nexus&userId=${targetId}`);
@@ -136,24 +131,29 @@ client.on('messageCreate', async (message) => {
       await message.channel.send({ embeds: [embed] });
     } catch (err) {
       console.error('Error fetching daily stats:', err);
-      message.reply("❌ Error fetching daily stats. Please try again later.");
+      message.reply("❌ Error fetching daily stats.");
     }
   }
 
-  // ===== !check ===== (user initiated only)
+  // ⚙️ !check
   if (message.content.startsWith('!check')) {
     try {
       const start = Date.now();
       let res, ping;
-      try { const response = await fetch(MAIN_SITE_URL); res = { ok: response.ok }; ping = Date.now() - start; } 
-      catch { res = { ok: false }; ping = null; }
+      try {
+        const response = await fetch(MAIN_SITE_URL, { timeout: 8000 });
+        res = { ok: response.ok };
+        ping = Date.now() - start;
+      } catch {
+        res = { ok: false };
+        ping = null;
+      }
 
-      let statusText = res.ok ? "ONLINE" : "OFFLINE";
-      let uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
+      const statusText = res.ok ? "ONLINE ✅" : "OFFLINE ❌";
+      const uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
 
       const embed = new EmbedBuilder()
         .setColor(0x000000)
-        .setThumbnail("") // gol
         .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${statusText}\nUPTIME: ${uptimeText}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
@@ -161,14 +161,15 @@ client.on('messageCreate', async (message) => {
       await message.channel.send({ embeds: [embed] });
 
     } catch (err) {
-      console.error(err);
+      console.error("!check error:", err);
+      message.reply("⚠️ The site appears to be DOWN or unreachable.");
     }
   }
 });
 
-// 7️⃣ Error handler
-client.on('error', (error) => console.error('Discord client error:', error));
-
-// 8️⃣ Login bot
-if (!TOKEN) { console.error('❌ DISCORD_BOT_TOKEN is not set!'); process.exit(1); }
+// ✅ 8️⃣ Login
+if (!TOKEN) {
+  console.error("❌ DISCORD_BOT_TOKEN missing!");
+  process.exit(1);
+}
 client.login(TOKEN);
