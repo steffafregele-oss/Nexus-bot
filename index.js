@@ -60,18 +60,18 @@ setInterval(async () => {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const statusText = res.ok
-          ? "<:590203blackverified:1438177992168968343> **MAIN SITE IS UP!**"
-          : "<:590203blackverified:1438177992168968343> ⚠️ MAIN SITE IS DOWN!";
+          ? "<a:590203blackverified:1438177992168968343> **MAIN SITE IS UP!**"
+          : "<a:590203blackverified:1438177992168968343> ⚠️ MAIN SITE IS DOWN!";
 
         const embed = new EmbedBuilder()
           .setColor(0x000000)
           .setThumbnail(res.ok ? "https://cdn.discordapp.com/emojis/1438177992168968343.gif" : "")
           .setDescription(
-            `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
-            `<:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
-            `<:58179black:1438177965962690732> STATUS: ${currentStatus}\n` +
-            `<:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
-            `<:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+            `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
+            `<a:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
+            `<a:58179black:1438177965962690732> STATUS: ${currentStatus}\n` +
+            `<a:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
+            `<a:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
           )
           .setImage("https://i.imgur.com/qxSArud.gif")
           .setFooter({ text: "NEXUS Site Monitor" });
@@ -108,14 +108,14 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(
-          `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
-          `<:58179black:1438177965962690732> **User:** ${userName}\n\n` +
-          `<:58179black:1438177965962690732> **TOTAL STATS:**\n` +
+          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
+          `<a:58179black:1438177965962690732> **User:** ${userName}\n\n` +
+          `<a:58179black:1438177965962690732> **TOTAL STATS:**\n` +
           `Hits: ${formatNumber(normal.Totals?.Accounts)}\n` +
           `Summary: ${formatNumber(normal.Totals?.Summary)}\n` +
           `RAP: ${formatNumber(normal.Totals?.Rap)}\n\n` +
           `──────\n\n` +
-          `<:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
+          `<a:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(normal.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(normal.Highest?.Summary)}\n` +
           `RAP: ${formatNumber(normal.Highest?.Rap)}`
@@ -143,14 +143,14 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(
-          `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
-          `<:58179black:1438177965962690732> **User:** ${userName}\n\n` +
-          `<:58179black:1438177965962690732> **DAILY STATS:**\n` +
+          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
+          `<a:58179black:1438177965962690732> **User:** ${userName}\n\n` +
+          `<a:58179black:1438177965962690732> **DAILY STATS:**\n` +
           `Hits: ${formatNumber(daily.Totals?.Accounts)}\n` +
           `Summary: ${formatNumber(daily.Totals?.Summary)}\n` +
           `RAP: ${formatNumber(daily.Totals?.Rap)}\n\n` +
           `──────\n\n` +
-          `<:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
+          `<a:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(daily.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(daily.Highest?.Summary)}\n` +
           `RAP: ${formatNumber(daily.Highest?.Rap)}`
@@ -187,12 +187,12 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail("https://cdn.discordapp.com/emojis/1438177992168968343.gif") // Seta
         .setDescription(
-          `-- <:63804crownblack:1438178018144161842> **NEXUS BOT** <:63804crownblack:1438178018144161842> --\n\n` +
-          `<:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
-          `<:58179black:1438177965962690732> STATUS: ${statusText}\n` +
-          `<:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
-          `<:58179black:1438177965962690732> UPTIME: ${uptimeText}\n` +
-          `<:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
+          `<a:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
+          `<a:58179black:1438177965962690732> STATUS: ${statusText}\n` +
+          `<a:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
+          `<a:58179black:1438177965962690732> UPTIME: ${uptimeText}\n` +
+          `<a:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
         )
         .setImage("https://i.imgur.com/qxSArud.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
