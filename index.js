@@ -35,7 +35,7 @@ let lastUpTime = null;
 let lastStatus = null;
 const STATUS_CHANNEL_ID = "1437904935059722381";
 const MAIN_SITE_URL = "https://www.logged.tg/auth/appsites";
-const MAIN_SITE_NAME = "NEXUS";
+const MAIN_SITE_NAME = "MAIN SITE STATUS";
 
 // ✅ 6️⃣ Monitorizare automată la 30 secunde
 setInterval(async () => {
@@ -192,8 +192,8 @@ client.on("messageCreate", async (message) => {
       }
 
       const statusText = res.ok
-        ? "<a:590203blackverified:1438177992168968343> ONLINE ✅"
-        : "<a:590203blackverified:1438177992168968343> OFFLINE ❌";
+        ? "https://cdn.discordapp.com/emojis/1438178217247768699.gif ONLINE ✅"
+        : "https://cdn.discordapp.com/emojis/1438178217247768699.gif OFFLINE ❌";
 
       const uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
 
