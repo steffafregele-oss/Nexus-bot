@@ -201,7 +201,7 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail("https://cdn.discordapp.com/emojis/1438177965962690732.gif") // thumbnail animat
         .setDescription(
-          `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
+          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
           `<a:5228_Seta:1438177992168968343> **${MAIN_SITE_NAME}**\n` +
           `<a:590203blackverified:1438178217247768699> STATUS: ${statusText}\n` +
           `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
