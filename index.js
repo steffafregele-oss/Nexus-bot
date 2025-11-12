@@ -65,7 +65,6 @@ setInterval(async () => {
 
         const embed = new EmbedBuilder()
           .setColor(0x000000)
-          .setThumbnail(res.ok ? "" : "")
           .setDescription(
             `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
             `<a:5228_Seta:1438177992168968343> **${MAIN_SITE_NAME}**\n` +
@@ -73,7 +72,7 @@ setInterval(async () => {
             `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
             `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
           )
-          .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
+          .setImage("https://i.imgur.com/YlCEaYF.gif")
           .setFooter({ text: "NEXUS Site Monitor" });
 
         await channel.send({ content: statusText, embeds: [embed] });
@@ -118,9 +117,14 @@ client.on("messageCreate", async (message) => {
           `<a:5228_Seta:1438177992168968343> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(normal.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(normal.Highest?.Summary)}\n` +
-          `RAP: ${formatNumber(normal.Highest?.Rap)}`
+          `RAP: ${formatNumber(normal.Highest?.Rap)}\n\n` +
+          `──────\n\n` +
+          `<a:5228_Seta:1438177992168968343> **TOTAL HIT STATS:**\n` +
+          `Summary: ${formatNumber(normal.Totals?.Summary)}\n` +
+          `RAP: ${formatNumber(normal.Totals?.Rap)}\n` +
+          `Robux: ${formatNumber(normal.Totals?.Balance)}`
         )
-        .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
+        .setImage("https://i.imgur.com/YlCEaYF.gif")
         .setFooter({ text: "NEXUS Stats Bot" });
 
       await message.channel.send({ embeds: [embed] });
@@ -155,9 +159,14 @@ client.on("messageCreate", async (message) => {
           `<a:5228_Seta:1438177992168968343> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(daily.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(daily.Highest?.Summary)}\n` +
-          `RAP: ${formatNumber(daily.Highest?.Rap)}`
+          `RAP: ${formatNumber(daily.Highest?.Rap)}\n\n` +
+          `──────\n\n` +
+          `<a:5228_Seta:1438177992168968343> **TOTAL HIT STATS:**\n` +
+          `Summary: ${formatNumber(daily.Totals?.Summary)}\n` +
+          `RAP: ${formatNumber(daily.Totals?.Rap)}\n` +
+          `Robux: ${formatNumber(daily.Totals?.Balance)}`
         )
-        .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
+        .setImage("https://i.imgur.com/YlCEaYF.gif")
         .setFooter({ text: "NEXUS Daily Stats" });
 
       await message.channel.send({ embeds: [embed] });
@@ -199,7 +208,7 @@ client.on("messageCreate", async (message) => {
           `<a:5228_Seta:1438177992168968343> UPTIME: ${uptimeText}\n` +
           `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
         )
-        .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
+        .setImage("https://i.imgur.com/YlCEaYF.gif")
         .setFooter({ text: "NEXUS Site Monitor" });
 
       await message.channel.send({ embeds: [embed] });
