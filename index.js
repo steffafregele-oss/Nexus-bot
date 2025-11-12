@@ -37,7 +37,7 @@ const STATUS_CHANNEL_ID = "1437904935059722381";
 const MAIN_SITE_URL = "https://www.logged.tg/auth/appsite";
 const MAIN_SITE_NAME = "NEXUS";
 
-// ✅ 6️⃣ Monitorizare automată (la 30 secunde)
+// ✅ 6️⃣ Monitorizare automată la 30 secunde
 setInterval(async () => {
   try {
     const start = Date.now();
@@ -60,20 +60,20 @@ setInterval(async () => {
       const channel = await client.channels.fetch(STATUS_CHANNEL_ID).catch(() => null);
       if (channel) {
         const statusText = res.ok
-          ? "<a:590203blackverified:1438177992168968343> **MAIN SITE IS UP!**"
+          ? "<a:590203blackverified:1438177992168968343> MAIN SITE IS UP!"
           : "<a:590203blackverified:1438177992168968343> ⚠️ MAIN SITE IS DOWN!";
 
         const embed = new EmbedBuilder()
           .setColor(0x000000)
-          .setThumbnail(res.ok ? "https://cdn.discordapp.com/emojis/1438177992168968343.gif" : "")
+          .setThumbnail(res.ok ? "" : "")
           .setDescription(
-            `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
-            `<a:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
-            `<a:58179black:1438177965962690732> STATUS: ${currentStatus}\n` +
-            `<a:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
-            `<a:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+            `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
+            `<a:5228_Seta:1438177992168968343> **${MAIN_SITE_NAME}**\n` +
+            `<a:5228_Seta:1438177992168968343> STATUS: ${currentStatus}\n` +
+            `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
+            `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
           )
-          .setImage("https://i.imgur.com/qxSArud.gif")
+          .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
           .setFooter({ text: "NEXUS Site Monitor" });
 
         await channel.send({ content: statusText, embeds: [embed] });
@@ -108,19 +108,19 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(
-          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
-          `<a:58179black:1438177965962690732> **User:** ${userName}\n\n` +
-          `<a:58179black:1438177965962690732> **TOTAL STATS:**\n` +
+          `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
+          `<a:5228_Seta:1438177992168968343> **User:** ${userName}\n\n` +
+          `<a:5228_Seta:1438177992168968343> **TOTAL STATS:**\n` +
           `Hits: ${formatNumber(normal.Totals?.Accounts)}\n` +
           `Summary: ${formatNumber(normal.Totals?.Summary)}\n` +
           `RAP: ${formatNumber(normal.Totals?.Rap)}\n\n` +
           `──────\n\n` +
-          `<a:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
+          `<a:5228_Seta:1438177992168968343> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(normal.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(normal.Highest?.Summary)}\n` +
           `RAP: ${formatNumber(normal.Highest?.Rap)}`
         )
-        .setImage("https://i.imgur.com/qxSArud.gif")
+        .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
         .setFooter({ text: "NEXUS Stats Bot" });
 
       await message.channel.send({ embeds: [embed] });
@@ -128,7 +128,9 @@ client.on("messageCreate", async (message) => {
       console.error("Error fetching stats:", err);
       message.reply("❌ Error fetching stats.");
     }
-  }  // ⚙️ !daily
+  }
+
+  // ⚙️ !daily
   if (message.content.startsWith("!daily")) {
     try {
       const res = await fetch(`https://api.injuries.lu/v2/daily?type=0x2&cs=3&ref=nexus&userId=${targetId}`);
@@ -143,19 +145,19 @@ client.on("messageCreate", async (message) => {
         .setColor(0x000000)
         .setThumbnail(targetUser.displayAvatarURL({ dynamic: true, size: 128 }))
         .setDescription(
-          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
-          `<a:58179black:1438177965962690732> **User:** ${userName}\n\n` +
-          `<a:58179black:1438177965962690732> **DAILY STATS:**\n` +
+          `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
+          `<a:5228_Seta:1438177992168968343> **User:** ${userName}\n\n` +
+          `<a:5228_Seta:1438177992168968343> **DAILY STATS:**\n` +
           `Hits: ${formatNumber(daily.Totals?.Accounts)}\n` +
           `Summary: ${formatNumber(daily.Totals?.Summary)}\n` +
           `RAP: ${formatNumber(daily.Totals?.Rap)}\n\n` +
           `──────\n\n` +
-          `<a:58179black:1438177965962690732> **BIGGEST HIT:**\n` +
+          `<a:5228_Seta:1438177992168968343> **BIGGEST HIT:**\n` +
           `Robux: ${formatNumber(daily.Highest?.Balance)}\n` +
           `Summary: ${formatNumber(daily.Highest?.Summary)}\n` +
           `RAP: ${formatNumber(daily.Highest?.Rap)}`
         )
-        .setImage("https://i.imgur.com/qxSArud.gif")
+        .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
         .setFooter({ text: "NEXUS Daily Stats" });
 
       await message.channel.send({ embeds: [embed] });
@@ -180,21 +182,24 @@ client.on("messageCreate", async (message) => {
         ping = null;
       }
 
-      const statusText = res.ok ? "<:590203blackverified:1438177992168968343> ONLINE ✅" : "<:590203blackverified:1438177992168968343> OFFLINE ❌";
+      const statusText = res.ok
+        ? "<a:590203blackverified:1438177992168968343> ONLINE ✅"
+        : "<a:590203blackverified:1438177992168968343> OFFLINE ❌";
+
       const uptimeText = res.ok && lastUpTime ? `UP for ${formatDuration(Date.now() - lastUpTime)}` : "❌ No uptime data";
 
       const embed = new EmbedBuilder()
         .setColor(0x000000)
-        .setThumbnail("https://cdn.discordapp.com/emojis/1438177992168968343.gif") // Seta
+        .setThumbnail("<a:58179black:1438177965962690732>")
         .setDescription(
-          `-- <a:63804crownblack:1438178018144161842> **NEXUS BOT** <a:63804crownblack:1438178018144161842> --\n\n` +
-          `<a:58179black:1438177965962690732> **${MAIN_SITE_NAME}**\n` +
-          `<a:58179black:1438177965962690732> STATUS: ${statusText}\n` +
-          `<a:58179black:1438177965962690732> RESPONSE CODE: ${res.status}\n` +
-          `<a:58179black:1438177965962690732> UPTIME: ${uptimeText}\n` +
-          `<a:58179black:1438177965962690732> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
+          `-- <a:63804crownblack:1438178018144161842> NEXUS BOT <a:63804crownblack:1438178018144161842> --\n\n` +
+          `<a:5228_Seta:1438177992168968343> **${MAIN_SITE_NAME}**\n` +
+          `<a:5228_Seta:1438177992168968343> STATUS: ${statusText}\n` +
+          `<a:5228_Seta:1438177992168968343> RESPONSE CODE: ${res.status}\n` +
+          `<a:5228_Seta:1438177992168968343> UPTIME: ${uptimeText}\n` +
+          `<a:5228_Seta:1438177992168968343> RESPONSE TIME: ${ping ? ping + "ms" : "N/A"}`
         )
-        .setImage("https://i.imgur.com/qxSArud.gif")
+        .setImage("https://i.imgur.com/YlCEaYF.gif") // 🔄 banner nou
         .setFooter({ text: "NEXUS Site Monitor" });
 
       await message.channel.send({ embeds: [embed] });
